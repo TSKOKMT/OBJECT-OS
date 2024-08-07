@@ -1,0 +1,11 @@
+ofxBox2d
+ofxBullet
+ofxClipper
+ofxConvexHull
+ofxFontStash
+ofxFrameOcean
+ofxGui
+ofxOsc
+ofxSvg
+ofxSyphon
+ofxVoronoi
