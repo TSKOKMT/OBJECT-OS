@@ -3,7 +3,6 @@ ofxBullet
 ofxClipper
 ofxConvexHull
 ofxFontStash
-ofxFrameOcean
 ofxGui
 ofxOsc
 ofxSvg
