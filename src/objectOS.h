@@ -6,13 +6,23 @@
 
 #include "interFace.h"
 
+//video
+#include "videoCloud.h"
+
+//word
+#include "wordCloud.h"
+
+//palette
+#include "paletteCloud.h"
+
 //screen
 #include "vipGrid.h"
 #include "slideGrid.h"
 #include "pushGrid.h"
 #include "emergeScreen.h"
 
-//module
+//visual
+//graphic
 #include "badMode.h"
 #include "andThen.h"
 #include "bigDot.h"
@@ -58,8 +68,6 @@
 #include "yoGreek.h"
 #include "zoomZoom.h"
 #include "softGrid.h"
-#include "videoPlayer.h"
-
 //typography
 #include "alphaDelta.h"
 #include "curvePara.h"
@@ -83,12 +91,12 @@
 #include "roundFace.h"
 #include "blueCrown.h"
 #include "diveWave.h"
+//movie
+#include "watchMovie.h"
 
-//video
-#include "videoCloud.h"
-
-//word
-#include "wordCloud.h"
+//chrome
+#include "twoTone.h"
+#include "colorWorld.h"
 
 //pixel
 #include "boredomWindow.h"
@@ -101,13 +109,6 @@
 #include "slitShut.h"
 #include "synMeme.h"
 #include "zigZig.h"
-
-//palette
-#include "colorCloud.h"
-
-//chrome
-#include "twoTone.h"
-#include "colorWorld.h"
 
 //cover
 #include "flashCover.h"
@@ -124,31 +125,34 @@ public:
     
     float newTime_ = 0;
     
-    int screenIndex = 0;
+    int frameRate = -1;
+    
     int videoIndex = 0;
     int japaneseIndex = 0;
     int englishIndex = 0;
-    int moduleIndex = 46;
     int paletteIndex = 0;
+    int colorIndex = 0;
+    int screenIndex = 0;
+    int visualIndex = 0;
     int chromeIndex = 0;
     int pixelIndex = 0;
     int coverIndex = 0;
     
-    int frameRate = -1;
-    int paletteShift = 0;
     float screenDelay = 0;
-    float paletteShiftTerm = -1;
+    
     float wordShiftTerm = -1;
     
-    tapMachine myTapMachine;
+    float paletteShiftTerm = -1;
     
-    interFace myInterFace;
+    //screen
+    void previousScreen();
+    void nextScreen();
     
     //word
     void previousWord();
     void nextWord();
     
-    //module
+    //visual
     void previousGraphic();
     void nextGraphic();
     void previousTypography();
@@ -170,18 +174,37 @@ public:
     void previousPixel();
     void nextPixel();
     
+    //cover
+    void previousCover();
+    void nextCover();
+    
+    tapMachine myTapMachine;
+    
+    interFace myInterFace;
+    
 private:
     float previousTime = 0;
+    
+    //video
+    videoCloud myVideoCloud;
+    
+    //word
+    wordCloud myWordCloud;
+    
+    //palette
+    paletteCloud myPaletteCloud;
     
     //screen
     vipGrid myVipGrid;
     slideGrid mySlideGrid;
     pushGrid myPushGrid;
     emergeScreen myEmergeScreen;
+    int screenCount = 5;
     
-    //module
-    badMode myBadMode;
+    //visual
+    //graphic
     andThen myAndThen;
+    badMode myBadMode;
     bigDot myBigDot;
     bigThree myBigThree;
     bluBar myBluBar;
@@ -191,7 +214,6 @@ private:
     everLasting myEverLasting;
     fallFree myFallFree;
     flagCheck myFlagCheck;
-    superOrganism mySuperOrganism;
     fragMent myFragMent;
     goldenDisc myGoldenDisc;
     huntRabbit myHuntRabbit;
@@ -211,8 +233,10 @@ private:
     screeningTest myScreeningTest;
     shiftCycle myShiftCycle;
     shopBot myShopBot;
+    softGrid mySoftGrid;
     spanningCole mySpanningCole;
     superFlat mySuperFlat;
+    superOrganism mySuperOrganism;
     theyMove myTheyMove;
     togeToge myTogeToge;
     transScale myTransScale;
@@ -223,41 +247,33 @@ private:
     winterRoad myWinterRoad;
     yoGreek myYoGreek;
     zoomZoom myZoomZoom;
-    softGrid mySoftGrid;
-    videoPlayer myVideoPlayer;
-    
+    int graphicCount= 44;
     //typography
     alphaDelta myAlphaDelta;
+    blueCrown myBlueCrown;
     curvePara myCurvePara;
     deepVibe myDeepVibe;
+    diveWave myDiveWave;
     digitalHybe myDigitalHybe;
-    fieldWork myFieldWork;
     echoChamber myEchoChamber;
+    fieldWork myFieldWork;
     goingGone myGoingGone;
     graviTas myGraviTas;
     kuruKuri myKuruKuri;
     longLonger myLongLonger;
     merryRound myMerryRound;
     moreGet myMoreGet;
-    squareScape mySquareScape;
     quickBrown myQuickBrown;
     rectAnd myRectAnd;
+    roundFace myRoundFace;
     slideLane mySlideLane;
     spaceBold mySpaceBold;
+    squareScape mySquareScape;
     threeStep myThreeStep;
     wipVip myWipVip;
-    roundFace myRoundFace;
-    blueCrown myBlueCrown;
-    diveWave myDiveWave;
-    
-    //video
-    videoCloud myVideoCloud;
-    
-    //word
-    wordCloud myWordCloud;
-    
-    //palette
-    colorCloud myColorCloud;
+    int typographyCount = 22;
+    //movie
+    watchMovie myWatchMovie;
     
     //chrome
     twoTone myTwoTone;
@@ -274,10 +290,12 @@ private:
     slitShut mySlitShut;
     synMeme mySynMeme;
     zigZig myZigZig;
+    int pixelCount = 11;
     
     //cover
     flashCover myFlashCover;
     oddCover myOddCover;
     pikaCover myPikaCover;
     blackCover myBlackCover;
+    int coverCount = 5;
 };

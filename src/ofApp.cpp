@@ -71,7 +71,7 @@ void ofApp::draw(){
     if (pads[3][5] > 0) myObjectOS.setColorSakamotoWorld();
     if (pads[3][6] > 0) myObjectOS.setColorIkkoTwo();
     if (pads[3][7] > 0) myObjectOS.setColorIkkoWorld();
-    if (pads[4][3] > 0) myObjectOS.paletteShift++;
+    if (pads[4][3] > 0) myObjectOS.colorIndex++;
     if (pads[4][4] > 0) myObjectOS.paletteShiftTerm = -1;
     if (pads[4][5] > 0) myObjectOS.paletteShiftTerm = 1 / 8.;
     if (pads[4][6] > 0) myObjectOS.paletteShiftTerm = 1;
@@ -109,32 +109,20 @@ void ofApp::keyPressed(int key){
         myObjectOS.myTapMachine.tap();
     }
     
-    if (key == OF_KEY_RIGHT) myObjectOS.moduleIndex = ofWrap(myObjectOS.moduleIndex + 1, 0, 67);
-    if (key == OF_KEY_LEFT) myObjectOS.moduleIndex = ofWrap(myObjectOS.moduleIndex - 1, 0, 67);
+    if (key == OF_KEY_DOWN) myObjectOS.previousScreen();
+    if (key == OF_KEY_UP) myObjectOS.nextScreen();
     
-    if (key == OF_KEY_UP) myObjectOS.screenIndex = ofWrap(myObjectOS.screenIndex + 1, 0, 5);
-    if (key == OF_KEY_DOWN) myObjectOS.screenIndex = ofWrap(myObjectOS.screenIndex - 1, 0, 5);
+    if (key == OF_KEY_LEFT) myObjectOS.previousGraphic();
+    if (key == OF_KEY_RIGHT) myObjectOS.nextGraphic();
     
-    if (key == 'a') myObjectOS.chromeIndex = ofWrap(myObjectOS.chromeIndex + 1, 0, 3);
-    if (key == 'd') myObjectOS.chromeIndex = ofWrap(myObjectOS.chromeIndex - 1, 0, 3);
+    if (key == 'a') myObjectOS.previousTypography();
+    if (key == 's') myObjectOS.nextTypography();
     
-    if (key == 's') myObjectOS.pixelIndex = ofWrap(myObjectOS.pixelIndex + 1, 0, 12);
-    if (key == 'w') myObjectOS.pixelIndex = ofWrap(myObjectOS.pixelIndex - 1, 0, 12);
+    if (key == 'o') myObjectOS.previousVideo();
+    if (key == 'p') myObjectOS.nextVideo();
     
-    if (key == 'l') myObjectOS.paletteIndex = ofWrap(myObjectOS.paletteIndex + 1, 0, 5);
-    if (key == 'k') myObjectOS.paletteIndex = ofWrap(myObjectOS.paletteIndex - 1, 0, 5);
-    
-    if (key == 'p') myObjectOS.paletteShift++;
-    if (key == 'o') myObjectOS.paletteShift--;
-    
-    if (key == 'm') myObjectOS.coverIndex = ofWrap(myObjectOS.coverIndex + 1, 0, 4);
-    if (key == 'n') myObjectOS.coverIndex = ofWrap(myObjectOS.coverIndex - 1, 0, 4);
-    
-    if (key == 'x') myObjectOS.nextWord();
-    if (key == 'z') myObjectOS.previousWord();
-    
-    if (key == '.') myObjectOS.videoIndex = ofWrap(myObjectOS.videoIndex + 1, 0, 21);
-    if (key == ',') myObjectOS.videoIndex = ofWrap(myObjectOS.videoIndex - 1, 0, 21);
+    if (key == 'k') myObjectOS.previousWord();
+    if (key == 'l') myObjectOS.nextWord();
     
     if (key == '1') myObjectOS.setColorMono();
     if (key == '2') myObjectOS.setColorRGBTwo();
@@ -143,9 +131,15 @@ void ofApp::keyPressed(int key){
     if (key == '5') myObjectOS.setColorSakamotoWorld();
     if (key == '6') myObjectOS.setColorIkkoTwo();
     if (key == '7') myObjectOS.setColorIkkoWorld();
+    if (key == '8') myObjectOS.colorIndex++;
+    if (key == '9') myObjectOS.paletteShiftTerm *= -1;
+    if (key == '0') myObjectOS.setColorNothing();
+        
+    if (key == 'z') myObjectOS.previousPixel();
+    if (key == 'x') myObjectOS.nextPixel();
     
-    if (key == '9') myObjectOS.paletteShiftTerm = 1;
-    if (key == '0') myObjectOS.paletteShiftTerm = -1;
+    if (key == 'n') myObjectOS.previousCover();
+    if (key == 'm') myObjectOS.nextCover();
 }
 
 //--------------------------------------------------------------

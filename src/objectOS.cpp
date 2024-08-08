@@ -9,17 +9,32 @@ objectOS::objectOS() {
 //--------------------------------------------------------------
 void objectOS::draw(ofRectangle frame_, float time_) {
     
+    //Update time
     newTime_ += (time_ - previousTime) * (myTapMachine.bpm / 60.);
     if (frameRate > 0) newTime_ = floor(newTime_ * frameRate) / (float)frameRate;
-    
     previousTime = time_;
     
-    if (paletteShiftTerm > 0) paletteShift = floor(newTime_ / paletteShiftTerm);
+    //Update video
+    if (visualIndex == graphicCount + typographyCount) myWatchMovie.load(myVideoCloud.pathes[videoIndex]);
     
+    //Update word
     if (wordShiftTerm > 0) {
         japaneseIndex = ofWrap(floor(newTime_ / wordShiftTerm), 0, myWordCloud.japanesePathes.size());
         englishIndex = ofWrap(floor(newTime_ / wordShiftTerm), 0, myWordCloud.englishes.size());
     }
+    
+    //Update palette
+    //Get
+    vector<ofColor> palette;
+    if (paletteIndex == 0) palette = myPaletteCloud.mono;
+    else if (paletteIndex == 1) palette = myPaletteCloud.rgb;
+    else if (paletteIndex == 2) palette = myPaletteCloud.six;
+    else if (paletteIndex == 3) palette = myPaletteCloud.sakamoto;
+    else palette = myPaletteCloud.ikko;
+    //Shift
+    if (paletteShiftTerm > 0) colorIndex = floor(newTime_ / paletteShiftTerm);
+    auto paletteShelter = palette;
+    for (int i = 0; i < palette.size(); i++) palette[i] = paletteShelter[ofWrap(i + colorIndex, 0, (int)palette.size())];
     
     //Set screens
     vector<ofRectangle> screens;
@@ -28,9 +43,6 @@ void objectOS::draw(ofRectangle frame_, float time_) {
     else if (screenIndex == 2) screens = mySlideGrid.get(frame_, newTime_);
     else if (screenIndex == 3) screens = myPushGrid.get(frame_, newTime_);
     else screens = myEmergeScreen.get(frame_, newTime_);
-    
-    //Set video
-    if (moduleIndex == 44) myVideoPlayer.load(myVideoCloud.pathes[videoIndex]);
     
     //Set japanese
     /*string japanesePath = myWordCloud.japanesePathes[japaneseIndex];
@@ -51,28 +63,30 @@ void objectOS::draw(ofRectangle frame_, float time_) {
     
     //Set english
     string englishWord = myWordCloud.englishes[englishIndex];
-    if (moduleIndex == 45) myAlphaDelta.text_ = englishWord;
-    if (moduleIndex == 46) myBlueCrown.text_ = englishWord;
-    if (moduleIndex == 47) myCurvePara.text_ = englishWord;
-    if (moduleIndex == 48) myDeepVibe.text_ = englishWord;
-    if (moduleIndex == 49) myDigitalHybe.text_ = englishWord;
-    if (moduleIndex == 50) myDiveWave.text_ = englishWord;
-    if (moduleIndex == 51) myEchoChamber.text_ = englishWord;
-    if (moduleIndex == 52) myFieldWork.text_ = englishWord;
-    if (moduleIndex == 53) myGoingGone.text_ = englishWord;
-    if (moduleIndex == 54) myGraviTas.text_ = englishWord;
-    if (moduleIndex == 55) myKuruKuri.text_ = englishWord;
-    if (moduleIndex == 56) myLongLonger.text_ = englishWord;
-    if (moduleIndex == 56) myLongLonger.text_ = englishWord;
-    if (moduleIndex == 57) myMerryRound.text_ = englishWord;
-    if (moduleIndex == 58) myMoreGet.text_ = englishWord;
-    if (moduleIndex == 59) myQuickBrown.text_ = englishWord;
-    if (moduleIndex == 61) myRoundFace.text_ = englishWord;
-    if (moduleIndex == 62) mySlideLane.text_ = englishWord;
-    if (moduleIndex == 63) mySpaceBold.text_ = englishWord + " " + myWordCloud.englishes[(englishIndex + 1) % (int)myWordCloud.englishes.size()] + " " + myWordCloud.englishes[(englishIndex + 2) % (int)myWordCloud.englishes.size()];
-    if (moduleIndex == 64) mySquareScape.text_ = englishWord;
-    if (moduleIndex == 65) myThreeStep.text_ = englishWord;
-    if (moduleIndex == 66) myWipVip.text_ = englishWord;
+    string englishWord2 = myWordCloud.englishes[(englishIndex + 1) % (int)myWordCloud.englishes.size()];
+    string englishWord3 = myWordCloud.englishes[(englishIndex + 2) % (int)myWordCloud.englishes.size()];
+    if (visualIndex == graphicCount + 0) myAlphaDelta.text_ = englishWord;
+    if (visualIndex == graphicCount + 1) myBlueCrown.text_ = englishWord;
+    if (visualIndex == graphicCount + 2) myCurvePara.text_ = englishWord;
+    if (visualIndex == graphicCount + 3) myDeepVibe.text_ = englishWord;
+    if (visualIndex == graphicCount + 4) myDiveWave.text_ = englishWord;
+    if (visualIndex == graphicCount + 5) myDigitalHybe.text_ = englishWord;
+    if (visualIndex == graphicCount + 6) myEchoChamber.text_ = englishWord;
+    if (visualIndex == graphicCount + 7) myFieldWork.text_ = englishWord;
+    if (visualIndex == graphicCount + 8) myGoingGone.text_ = englishWord;
+    if (visualIndex == graphicCount + 9) myGraviTas.text_ = englishWord;
+    if (visualIndex == graphicCount + 10) myKuruKuri.text_ = englishWord;
+    if (visualIndex == graphicCount + 11) myLongLonger.text_ = englishWord;
+    if (visualIndex == graphicCount + 12) myMerryRound.text_ = englishWord;
+    if (visualIndex == graphicCount + 13) myMoreGet.text_ = englishWord;
+    if (visualIndex == graphicCount + 14) myQuickBrown.text_ = englishWord;
+    if (visualIndex == graphicCount + 15) myRectAnd.text_ = englishWord;
+    if (visualIndex == graphicCount + 16) myRoundFace.text_ = englishWord;
+    if (visualIndex == graphicCount + 17) mySlideLane.text_ = englishWord;
+    if (visualIndex == graphicCount + 18) mySpaceBold.text_ = englishWord + " " + englishWord2 + " " + englishWord3;;
+    if (visualIndex == graphicCount + 19) mySquareScape.text_ = englishWord;
+    if (visualIndex == graphicCount + 20) myThreeStep.text_ = englishWord;
+    if (visualIndex == graphicCount + 21) myWipVip.text_ = englishWord;
     
     //Create & begin fbo
     ofFbo fbo;
@@ -86,94 +100,80 @@ void objectOS::draw(ofRectangle frame_, float time_) {
         
         float newTime = newTime_ - i * screenDelay;
      
-        //module
-        if (moduleIndex == 0) myBadMode.draw(screen, newTime);
-        if (moduleIndex == 1) myAndThen.draw(screen, newTime);
-        if (moduleIndex == 2) myBigDot.draw(screen, newTime);
-        if (moduleIndex == 3) myBigThree.draw(screen, newTime); //Update change
-        if (moduleIndex == 4) myBluBar.draw(screen, newTime);
-        if (moduleIndex == 5) myBluBlu.draw(screen, newTime);
-        if (moduleIndex == 6) myDarlingApp.draw(screen, newTime); //heavy
-        if (moduleIndex == 7) myEmergeMulti.draw(screen, newTime);
-        if (moduleIndex == 8) myEverLasting.draw(screen, newTime);
-        if (moduleIndex == 9) myFallFree.draw(screen, newTime);
-        if (moduleIndex == 10) myFlagCheck.draw(screen, newTime);
-        if (moduleIndex == 11) mySuperOrganism.draw(screen, newTime); //Crop or not
-        if (moduleIndex == 12) myFragMent.draw(screen, newTime); //Too Update Frames
-        if (moduleIndex == 13) myGoldenDisc.draw(screen, newTime);
-        if (moduleIndex == 14) myHuntRabbit.draw(screen, newTime);
-        if (moduleIndex == 15) myIcoIcon.draw(screen, newTime);
-        if (moduleIndex == 16) myKeenPublic.draw(screen, newTime);
-        if (moduleIndex == 17) myKeepDistance.draw(screen, newTime);
-        if (moduleIndex == 18) myKickBack.draw(screen, newTime);
-        if (moduleIndex == 19) myLongDistance.draw(screen, newTime); //On demand please
-        if (moduleIndex == 20) myMadPile.draw(screen, newTime); //fall off when push grid
-        if (moduleIndex == 21) myMoonShot.draw(screen, newTime);
-        if (moduleIndex == 22) myNightDiary.draw(screen, newTime);
-        if (moduleIndex == 23) myNotionTation.draw(screen, newTime); //Update change
-        if (moduleIndex == 24) myNuWit.draw(screen, newTime);
-        if (moduleIndex == 25) myPointShoot.draw(screen, newTime);
-        if (moduleIndex == 26) myPolyPoli.draw(screen, newTime);
-        if (moduleIndex == 27) myReCenter.draw(screen, newTime);
-        if (moduleIndex == 28) myScreeningTest.draw(screen, newTime);
-        if (moduleIndex == 29) myShiftCycle.draw(screen, newTime); //Change update
-        if (moduleIndex == 30) myShopBot.draw(screen, newTime);
-        if (moduleIndex == 31) mySpanningCole.draw(screen, newTime);
-        if (moduleIndex == 32) mySuperFlat.draw(screen, newTime);
-        if (moduleIndex == 33) myTheyMove.draw(screen, newTime);
-        if (moduleIndex == 34) myTogeToge.draw(screen, newTime);
-        if (moduleIndex == 35) myTransScale.draw(screen, newTime);
-        if (moduleIndex == 36) myTrickMe.draw(screen, newTime); //too update
-        if (moduleIndex == 37) myTryAngle.draw(screen, newTime);
-        if (moduleIndex == 38) myTwoBall.draw(screen, newTime);
-        if (moduleIndex == 39) myUnbalanceLance.draw(screen, newTime);
-        if (moduleIndex == 40) myWinterRoad.draw(screen, newTime);
-        if (moduleIndex == 41) myYoGreek.draw(screen, newTime);
-        if (moduleIndex == 42) myZoomZoom.draw(screen, newTime);
-        if (moduleIndex == 43) mySoftGrid.draw(screen, newTime);
-        
-        //video
-        if (moduleIndex == 44) myVideoPlayer.draw(screen, newTime);
-        
+        //visual
+        //graphic
+        if (visualIndex == 0) myAndThen.draw(screen, newTime);
+        if (visualIndex == 1) myBadMode.draw(screen, newTime);
+        if (visualIndex == 2) myBigDot.draw(screen, newTime);
+        if (visualIndex == 3) myBigThree.draw(screen, newTime); //Update change
+        if (visualIndex == 4) myBluBar.draw(screen, newTime);
+        if (visualIndex == 5) myBluBlu.draw(screen, newTime);
+        if (visualIndex == 6) myDarlingApp.draw(screen, newTime); //heavy
+        if (visualIndex == 7) myEmergeMulti.draw(screen, newTime);
+        if (visualIndex == 8) myEverLasting.draw(screen, newTime);
+        if (visualIndex == 9) myFallFree.draw(screen, newTime);
+        if (visualIndex == 10) myFlagCheck.draw(screen, newTime);
+        if (visualIndex == 11) myFragMent.draw(screen, newTime); //Too Update Frames
+        if (visualIndex == 12) myGoldenDisc.draw(screen, newTime);
+        if (visualIndex == 13) myHuntRabbit.draw(screen, newTime);
+        if (visualIndex == 14) myIcoIcon.draw(screen, newTime);
+        if (visualIndex == 15) myKeenPublic.draw(screen, newTime);
+        if (visualIndex == 16) myKeepDistance.draw(screen, newTime);
+        if (visualIndex == 17) myKickBack.draw(screen, newTime);
+        if (visualIndex == 18) myLongDistance.draw(screen, newTime); //On demand please
+        if (visualIndex == 19) myMadPile.draw(screen, newTime);
+        if (visualIndex == 20) myMoonShot.draw(screen, newTime); //fall off when push grid
+        if (visualIndex == 21) myNightDiary.draw(screen, newTime);
+        if (visualIndex == 22) myNotionTation.draw(screen, newTime); //Update change
+        if (visualIndex == 23) myNuWit.draw(screen, newTime);
+        if (visualIndex == 24) myPointShoot.draw(screen, newTime);
+        if (visualIndex == 25) myPolyPoli.draw(screen, newTime);
+        if (visualIndex == 26) myReCenter.draw(screen, newTime);
+        if (visualIndex == 27) myScreeningTest.draw(screen, newTime);
+        if (visualIndex == 28) myShiftCycle.draw(screen, newTime); //Change update
+        if (visualIndex == 29) myShopBot.draw(screen, newTime);
+        if (visualIndex == 30) mySoftGrid.draw(screen, newTime);
+        if (visualIndex == 31) mySpanningCole.draw(screen, newTime);
+        if (visualIndex == 32) mySuperFlat.draw(screen, newTime);
+        if (visualIndex == 33) mySuperOrganism.draw(screen, newTime); //Crop or not
+        if (visualIndex == 34) myTheyMove.draw(screen, newTime);
+        if (visualIndex == 35) myTogeToge.draw(screen, newTime);
+        if (visualIndex == 36) myTransScale.draw(screen, newTime);
+        if (visualIndex == 37) myTrickMe.draw(screen, newTime); //too update
+        if (visualIndex == 38) myTryAngle.draw(screen, newTime);
+        if (visualIndex == 39) myTwoBall.draw(screen, newTime);
+        if (visualIndex == 40) myUnbalanceLance.draw(screen, newTime);
+        if (visualIndex == 41) myWinterRoad.draw(screen, newTime);
+        if (visualIndex == 42) myYoGreek.draw(screen, newTime);
+        if (visualIndex == 43) myZoomZoom.draw(screen, newTime);
         //typography
-        if (moduleIndex == 45) myAlphaDelta.draw(screen, newTime);
-        if (moduleIndex == 46) myBlueCrown.draw(screen, newTime);
-        if (moduleIndex == 47) myCurvePara.draw(screen, newTime);
-        if (moduleIndex == 48) myDeepVibe.draw(screen, newTime); //Little heavy
-        if (moduleIndex == 49) myDigitalHybe.draw(screen, newTime); //Change begin algo
-        if (moduleIndex == 50) myDiveWave.draw(screen, newTime);
-        if (moduleIndex == 51) myEchoChamber.draw(screen, newTime);
-        if (moduleIndex == 52) myFieldWork.draw(screen, newTime); //Heavy. maybe this is screen?
-        if (moduleIndex == 53) myGoingGone.draw(screen, newTime); //Heavy
-        if (moduleIndex == 54) myGraviTas.draw(screen, newTime);
-        if (moduleIndex == 55) myKuruKuri.draw(screen, newTime);
-        if (moduleIndex == 56) myLongLonger.draw(screen, newTime);
-        if (moduleIndex == 57) myMerryRound.draw(screen, newTime);
-        if (moduleIndex == 58) myMoreGet.draw(screen, newTime); //Crop or not?
-        if (moduleIndex == 59) myQuickBrown.draw(screen, newTime);
-        if (moduleIndex == 60) myRectAnd.draw(screen, newTime); //What is this
-        if (moduleIndex == 61) myRoundFace.draw(screen, newTime);
-        if (moduleIndex == 62) mySlideLane.draw(screen, newTime); //maybe this is screen?
-        if (moduleIndex == 63) mySpaceBold.draw(screen, newTime);
-        if (moduleIndex == 64) mySquareScape.draw(screen, newTime);
-        if (moduleIndex == 65) myThreeStep.draw(screen, newTime);
-        if (moduleIndex == 66) myWipVip.draw(screen, newTime);
+        if (visualIndex == graphicCount + 0) myAlphaDelta.draw(screen, newTime);
+        if (visualIndex == graphicCount + 1) myBlueCrown.draw(screen, newTime);
+        if (visualIndex == graphicCount + 2) myCurvePara.draw(screen, newTime);
+        if (visualIndex == graphicCount + 3) myDeepVibe.draw(screen, newTime); //Little heavy
+        if (visualIndex == graphicCount + 4) myDigitalHybe.draw(screen, newTime); //Change begin algo
+        if (visualIndex == graphicCount + 5) myDiveWave.draw(screen, newTime);
+        if (visualIndex == graphicCount + 6) myEchoChamber.draw(screen, newTime);
+        if (visualIndex == graphicCount + 7) myFieldWork.draw(screen, newTime); //Heavy. maybe this is screen?
+        if (visualIndex == graphicCount + 8) myGoingGone.draw(screen, newTime); //Heavy
+        if (visualIndex == graphicCount + 9) myGraviTas.draw(screen, newTime);
+        if (visualIndex == graphicCount + 10) myKuruKuri.draw(screen, newTime);
+        if (visualIndex == graphicCount + 11) myLongLonger.draw(screen, newTime);
+        if (visualIndex == graphicCount + 12) myMerryRound.draw(screen, newTime);
+        if (visualIndex == graphicCount + 13) myMoreGet.draw(screen, newTime); //Crop or not?
+        if (visualIndex == graphicCount + 14) myQuickBrown.draw(screen, newTime);
+        if (visualIndex == graphicCount + 15) myRectAnd.draw(screen, newTime); //What is this
+        if (visualIndex == graphicCount + 16) myRoundFace.draw(screen, newTime);
+        if (visualIndex == graphicCount + 17) mySlideLane.draw(screen, newTime); //maybe this is screen?
+        if (visualIndex == graphicCount + 18) mySpaceBold.draw(screen, newTime);
+        if (visualIndex == graphicCount + 19) mySquareScape.draw(screen, newTime);
+        if (visualIndex == graphicCount + 20) myThreeStep.draw(screen, newTime);
+        if (visualIndex == graphicCount + 21) myWipVip.draw(screen, newTime);
+        //video
+        if (visualIndex == graphicCount + typographyCount) myWatchMovie.draw(screen, newTime);
     }
     
     fbo.end();
-    
-    //palette
-    vector<ofColor> palette;
-    if (paletteIndex == 0) palette = myColorCloud.mono;
-    else if (paletteIndex == 1) palette = myColorCloud.rgb;
-    else if (paletteIndex == 2) palette = myColorCloud.six;
-    else if (paletteIndex == 3) palette = myColorCloud.sakamoto;
-    else palette = myColorCloud.ikko;
-    
-    auto paletteShelter = palette;
-    for (int i = 0; i < palette.size(); i++) {
-        palette[i] = paletteShelter[ofWrap(i + paletteShift, 0, (int)palette.size())];
-    }
 
     //chrome
     ofFbo fboC;
@@ -216,6 +216,17 @@ void objectOS::draw(ofRectangle frame_, float time_) {
 }
 
 //--------------------------------------------------------------
+void objectOS::previousScreen() {
+    
+    screenIndex = ofWrap(screenIndex - 1, 0, screenCount);
+}
+//--------------------------------------------------------------
+void objectOS::nextScreen() {
+    
+    screenIndex = ofWrap(screenIndex + 1, 0, screenCount);
+}
+
+//--------------------------------------------------------------
 void objectOS::previousWord() {
     
     japaneseIndex = ofWrap(japaneseIndex - 1, 0, myWordCloud.japanesePathes.size());
@@ -231,37 +242,37 @@ void objectOS::nextWord() {
 //--------------------------------------------------------------
 void objectOS::previousGraphic() {
     
-    if (0 <= moduleIndex && moduleIndex < 44) moduleIndex = ofWrap(moduleIndex - 1, 0, 44);
-    else moduleIndex = 43;
+    if (0 <= visualIndex && visualIndex < graphicCount) visualIndex = ofWrap(visualIndex - 1, 0, graphicCount);
+    else visualIndex = graphicCount - 1;
 }
 //--------------------------------------------------------------
 void objectOS::nextGraphic() {
     
-    if (0 <= moduleIndex && moduleIndex < 44) moduleIndex = ofWrap(moduleIndex + 1, 0, 44);
-    else moduleIndex = 0;
+    if (0 <= visualIndex && visualIndex < graphicCount) visualIndex = ofWrap(visualIndex + 1, 0, graphicCount);
+    else visualIndex = 0;
 }
 //--------------------------------------------------------------
 void objectOS::previousTypography() {
     
-    if (45 <= moduleIndex && moduleIndex < 67) moduleIndex = ofWrap(moduleIndex - 1, 45, 67);
-    else moduleIndex = 66;
+    if (graphicCount <= visualIndex && visualIndex < graphicCount + typographyCount) visualIndex = ofWrap(visualIndex - 1, graphicCount, graphicCount + typographyCount);
+    else visualIndex = graphicCount + typographyCount - 1;
 }
 //--------------------------------------------------------------
 void objectOS::nextTypography() {
     
-    if (45 <= moduleIndex && moduleIndex < 67) moduleIndex = ofWrap(moduleIndex + 1, 45, 67);
-    else moduleIndex = 45;
+    if (graphicCount <= visualIndex && visualIndex < graphicCount + typographyCount) visualIndex = ofWrap(visualIndex + 1, graphicCount, graphicCount + typographyCount);
+    else visualIndex = graphicCount;
 }
 //--------------------------------------------------------------
 void objectOS::previousVideo() {
     
-    moduleIndex = 44;
+    visualIndex = graphicCount + typographyCount;
     videoIndex = ofWrap(videoIndex - 1, 0, myVideoCloud.pathes.size());
 }
 //--------------------------------------------------------------
 void objectOS::nextVideo() {
     
-    moduleIndex = 44;
+    visualIndex = graphicCount + typographyCount;
     videoIndex = ofWrap(videoIndex + 1, 0, myVideoCloud.pathes.size());
 }
 
@@ -317,12 +328,21 @@ void objectOS::setColorIkkoWorld() {
 //--------------------------------------------------------------
 void objectOS::previousPixel() {
     
-    cout << ofGetFrameNum() << " : " << ofGetElapsedTimef() << endl;
-    
-    pixelIndex = ofWrap(pixelIndex - 1, 1, 11);
+    pixelIndex = ofWrap(pixelIndex - 1, 0, pixelCount);
 }
 //--------------------------------------------------------------
 void objectOS::nextPixel() {
     
-    pixelIndex = ofWrap(pixelIndex + 1, 1, 11);
+    pixelIndex = ofWrap(pixelIndex + 1, 0, pixelCount);
+}
+
+//--------------------------------------------------------------
+void objectOS::previousCover() {
+    
+    coverIndex = ofWrap(coverIndex - 1, 0, coverCount);
+}
+//--------------------------------------------------------------
+void objectOS::nextCover() {
+    
+    coverIndex = ofWrap(coverIndex + 1, 0, coverCount);
 }
